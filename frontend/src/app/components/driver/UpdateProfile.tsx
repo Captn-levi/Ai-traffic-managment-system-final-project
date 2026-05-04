@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { User, Mail, Phone, CreditCard, Camera } from 'lucide-react';
 import MobileHeader from '../shared/MobileHeader';
 import { Button } from '../ui/button';
@@ -6,18 +6,96 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 
 export default function UpdateProfile() {
+
   const [profile, setProfile] = useState({
-    fullName: 'John Doe',
-    email: 'john.doe@example.com',
-    phone: '+1 234 567 8900',
-    licenseNumber: 'DL-123456789',
-    address: '123 Main Street, City, State 12345'
+    id: 0,
+    fullName: '',
+    email: '',
+    phone: '',
+    license_Number: '',
+    address: '',
+    currentPassword: '',
+    newPassword: ''
   });
 
-  const handleSave = () => {
-    // Save profile logic
-    alert('Profile updated successfully!');
-  };
+  // ✅ LOAD USER
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("driver") || "{}");
+
+    if (!user.id) {
+      alert("Not logged in");
+      return;
+    }
+
+    setProfile({
+      id: user.id,
+      fullName: user.name || '',
+      email: user.email || '',
+      phone: user.phone || '',
+      license_Number: user.license_Number || '',
+      address: user.address || '',
+      currentPassword: '',
+      newPassword: ''
+    });
+
+  }, []);
+
+  // ✅ SAVE
+  const handleSave = async () => {
+  if (!profile.fullName || !profile.email) {
+    alert("Name and Email required");
+    return;
+  }
+
+  try {
+    const res = await fetch("http://localhost/traffic/backend/update_driver.php", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        id: profile.id,
+        name: profile.fullName,
+        email: profile.email,
+        phone: profile.phone,
+        license_Number: profile.license_Number,
+        address: profile.address,
+        currentPassword: profile.currentPassword,
+        newPassword: profile.newPassword
+      })
+    });
+
+    const data = await res.json();
+
+    console.log("SERVER RESPONSE:", data); // 🔥 DEBUG
+
+    if (data.success) {
+      alert("✅ Profile updated");
+
+      localStorage.setItem("driver", JSON.stringify({
+        id: profile.id,
+        name: profile.fullName,
+        email: profile.email,
+        phone: profile.phone,
+        license_Number: profile.license_Number,
+        address: profile.address
+      }));
+
+      setProfile({
+        ...profile,
+        currentPassword: '',
+        newPassword: ''
+      });
+
+    } else {
+      alert("❌ " + data.error);
+    }
+
+  } catch (err) {
+    console.error("FETCH ERROR:", err);
+    alert("❌ Failed to connect to server");
+  }
+};
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -25,6 +103,8 @@ export default function UpdateProfile() {
       
       <div className="p-4 max-w-2xl mx-auto pb-24">
         <div className="bg-white rounded-xl shadow-md p-6 mb-4">
+
+          {/* PROFILE HEADER */}
           <div className="flex flex-col items-center mb-6">
             <div className="relative">
               <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center">
@@ -34,27 +114,28 @@ export default function UpdateProfile() {
                 <Camera className="w-4 h-4" />
               </Button>
             </div>
+
             <h2 className="text-lg mt-3 text-gray-900">{profile.fullName}</h2>
-            <p className="text-sm text-gray-500">{profile.licenseNumber}</p>
+            <p className="text-sm text-gray-500">{profile.license_Number}</p>
           </div>
 
+          {/* FORM */}
           <div className="space-y-4">
+
             <div>
-              <Label htmlFor="fullName">Full Name</Label>
+              <Label>Full Name</Label>
               <Input
-                id="fullName"
                 value={profile.fullName}
                 onChange={(e) => setProfile({ ...profile, fullName: e.target.value })}
               />
             </div>
 
             <div>
-              <Label htmlFor="email" className="flex items-center gap-2">
+              <Label className="flex items-center gap-2">
                 <Mail className="w-4 h-4" />
                 Email
               </Label>
               <Input
-                id="email"
                 type="email"
                 value={profile.email}
                 onChange={(e) => setProfile({ ...profile, email: e.target.value })}
@@ -62,40 +143,55 @@ export default function UpdateProfile() {
             </div>
 
             <div>
-              <Label htmlFor="phone" className="flex items-center gap-2">
+              <Label className="flex items-center gap-2">
                 <Phone className="w-4 h-4" />
-                Phone Number
+                Phone
               </Label>
               <Input
-                id="phone"
                 value={profile.phone}
                 onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
               />
             </div>
 
             <div>
-              <Label htmlFor="license" className="flex items-center gap-2">
+              <Label className="flex items-center gap-2">
                 <CreditCard className="w-4 h-4" />
                 License Number
               </Label>
-              <Input
-                id="license"
-                value={profile.licenseNumber}
-                onChange={(e) => setProfile({ ...profile, licenseNumber: e.target.value })}
-                disabled
-                className="bg-gray-100"
-              />
-              <p className="text-xs text-gray-500 mt-1">License number cannot be modified</p>
+              <Input value={profile.license_Number} disabled className="bg-gray-100" />
             </div>
 
             <div>
-              <Label htmlFor="address">Address</Label>
+              <Label>Address</Label>
               <Input
-                id="address"
                 value={profile.address}
                 onChange={(e) => setProfile({ ...profile, address: e.target.value })}
               />
             </div>
+
+            {/* PASSWORD SECTION */}
+            <div>
+              <Label>Current Password</Label>
+              <Input
+                type="password"
+                value={profile.currentPassword}
+                onChange={(e) =>
+                  setProfile({ ...profile, currentPassword: e.target.value })
+                }
+              />
+            </div>
+
+            <div>
+              <Label>New Password</Label>
+              <Input
+                type="password"
+                value={profile.newPassword}
+                onChange={(e) =>
+                  setProfile({ ...profile, newPassword: e.target.value })
+                }
+              />
+            </div>
+
           </div>
         </div>
 

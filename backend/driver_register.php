@@ -1,80 +1,39 @@
 <?php
-// ✅ CORS FIX (VERY IMPORTANT)
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, OPTIONS");
+header("Access-Control-Allow-Methods: POST, PUT, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
+header("Content-Type: application/json");
 
-// handle preflight request
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    exit(0);
-}
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') exit;
 
-// ✅ DATABASE CONNECTION
 $conn = new mysqli("localhost", "root", "", "traffic_system");
 
-if ($conn->connect_error) {
-    echo json_encode([
-        "success" => false,
-        "error" => "Database connection failed"
-    ]);
-    exit;
-}
-
-// ✅ GET JSON DATA
 $data = json_decode(file_get_contents("php://input"), true);
 
-// ✅ EXTRACT DATA
-$name = $data['name'] ?? '';
-$email = $data['email'] ?? '';
-$phone = $data['phone'] ?? '';
-$license = $data['license'] ?? '';
-$password = $data['password'] ?? '';
+$id = $data['id'] ?? null;
+$name = $data['name'];
+$email = $data['email'];
+$password = $data['password'];
+$phone = $data['phone'];
+$license = $data['license'];
 
-// ✅ VALIDATION
-if (!$name || !$email || !$phone || !$license || !$password) {
-    echo json_encode([
-        "success" => false,
-        "error" => "All fields are required"
-    ]);
+if (!$name || !$email || !$password || !$phone || !$license) {
+    echo json_encode(["success"=>false,"error"=>"All fields required"]);
     exit;
 }
 
-// ✅ CHECK IF EMAIL EXISTS
-$check = $conn->prepare("SELECT id FROM driver WHERE email = ?");
-$check->bind_param("s", $email);
-$check->execute();
-$result = $check->get_result();
-
-if ($result->num_rows > 0) {
-    echo json_encode([
-        "success" => false,
-        "error" => "Email already exists"
-    ]);
-    exit;
-}
-
-// ✅ INSERT DRIVER
-$stmt = $conn->prepare(
-    "INSERT INTO driver (name, email, password, phone, license_number) 
-     VALUES (?, ?, ?, ?, ?)"
-);
-
-$stmt->bind_param("sssss", $name, $email, $password, $phone, $license);
-
-// ✅ EXECUTE
-if ($stmt->execute()) {
-    echo json_encode([
-        "success" => true,
-        "message" => "Driver registered successfully"
-    ]);
+// UPDATE
+if ($_SERVER['REQUEST_METHOD'] === 'PUT' && $id) {
+    $stmt = $conn->prepare("UPDATE driver SET name=?, email=?, password=?, phone=?, license_number=? WHERE id=?");
+    $stmt->bind_param("sssssi",$name,$email,$password,$phone,$license,$id);
 } else {
-    echo json_encode([
-        "success" => false,
-        "error" => $stmt->error
-    ]);
+    // INSERT
+    $stmt = $conn->prepare("INSERT INTO driver (name,email,password,phone,license_number) VALUES (?,?,?,?,?)");
+    $stmt->bind_param("sssss",$name,$email,$password,$phone,$license);
 }
 
-// ✅ CLOSE CONNECTION
-$stmt->close();
-$conn->close();
-?>
+if ($stmt->execute()) {
+    echo json_encode(["success"=>true]);
+} else {
+    echo json_encode(["success"=>false,"error"=>$stmt->error]);
+}

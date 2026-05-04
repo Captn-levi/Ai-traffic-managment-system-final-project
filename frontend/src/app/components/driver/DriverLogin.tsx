@@ -26,7 +26,7 @@ const handleLogin = async (e: React.FormEvent) => {
     const data = await response.json();
 
     if (data.success) {
-  localStorage.setItem("user", JSON.stringify(data.user));
+  localStorage.setItem("driver", JSON.stringify(data.user));
   navigate('/driver/dashboard');
     } else {
       alert("Invalid credentials");
