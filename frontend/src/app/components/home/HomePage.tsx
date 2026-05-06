@@ -8,12 +8,13 @@ export default function HomePage() {
 
   // 🔥 SLIDES (you can replace with real images)
   const slides = [
-    "/src/image/gotera.jpg",
+    "https://www.ebc.et/admin/news/2025/10/1/243e2f49-0f74-4a84-a130-478a3cc11078.webp",
+    "https://tse4.mm.bing.net/th/id/OIP.TVvHyr7NdXLdaqPMn80OyQHaEK?pid=Api&h=220&P=0",
     "https://images.unsplash.com/photo-1511919884226-fd3cad34687c",
-    "/src/image/bycicle.jpg",
-    "/src/image/bole-frindship.jpg",
-    "/src/image/OIP.jpg"
-    
+    "https://www.eastafricanreview.com/wp-content/uploads/2024/06/Abye-After-Displacing-Piassa-residents-780x470.jpg",
+    "https://tse4.mm.bing.net/th/id/OIP.zj74WLRgMgko5tN5onJfYgHaFH?pid=Api&h=220&P=0",
+    "https://ethiopianstoday.com/wp-content/uploads/2024/04/6496_1713623262-1024x564.jpeg",
+    "https://tse3.mm.bing.net/th/id/OIP.4iLYSFrk_pmI5m6VgzCjCQHaE7?pid=Api&h=220&P=0"  
   ];
 
   // 🔁 AUTO SLIDE
