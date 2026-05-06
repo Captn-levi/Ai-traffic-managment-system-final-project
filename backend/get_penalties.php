@@ -1,5 +1,5 @@
 <?php
-// ✅ CORS (MUST be at top)
+//  CORS 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
@@ -7,7 +7,7 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
-// ✅ HANDLE PREFLIGHT REQUEST
+//  HANDLE PREFLIGHT REQUEST
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
@@ -20,10 +20,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 header("Content-Type: application/json");
 
-// ✅ DB connection
+//  DB connection
 $conn = new mysqli("localhost", "root", "", "traffic_system");
 
-// ✅ Read input safely
+//  Read input 
 $raw = file_get_contents("php://input");
 
 if (!$raw) {

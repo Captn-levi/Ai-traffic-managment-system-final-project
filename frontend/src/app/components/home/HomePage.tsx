@@ -5,8 +5,9 @@ import { useState, useEffect } from 'react';
 export default function HomePage() {
 
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  // 🔥 SLIDES (you can replace with real images)
+  // 🔥 SLIDES
   const slides = [
     "https://www.ebc.et/admin/news/2025/10/1/243e2f49-0f74-4a84-a130-478a3cc11078.webp",
     "https://tse4.mm.bing.net/th/id/OIP.TVvHyr7NdXLdaqPMn80OyQHaEK?pid=Api&h=220&P=0",
@@ -14,7 +15,7 @@ export default function HomePage() {
     "https://www.eastafricanreview.com/wp-content/uploads/2024/06/Abye-After-Displacing-Piassa-residents-780x470.jpg",
     "https://tse4.mm.bing.net/th/id/OIP.zj74WLRgMgko5tN5onJfYgHaFH?pid=Api&h=220&P=0",
     "https://ethiopianstoday.com/wp-content/uploads/2024/04/6496_1713623262-1024x564.jpeg",
-    "https://tse3.mm.bing.net/th/id/OIP.4iLYSFrk_pmI5m6VgzCjCQHaE7?pid=Api&h=220&P=0"  
+    "https://tse3.mm.bing.net/th/id/OIP.4iLYSFrk_pmI5m6VgzCjCQHaE7?pid=Api&h=220&P=0"
   ];
 
   // 🔁 AUTO SLIDE
@@ -24,13 +25,14 @@ export default function HomePage() {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [slides.length]);
 
   return (
     <div className="min-h-screen bg-gray-50">
 
       {/* ================= HEADER ================= */}
       <header className="bg-white shadow-sm sticky top-0 z-50">
+
         <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
 
           {/* LOGO */}
@@ -41,7 +43,7 @@ export default function HomePage() {
             </span>
           </div>
 
-          {/* NAV LINKS */}
+          {/* DESKTOP NAV */}
           <nav className="hidden md:flex gap-6 text-sm text-gray-600">
             <Link to="/" className="hover:text-indigo-600">Home</Link>
             <a href="#about" className="hover:text-indigo-600">About</a>
@@ -50,9 +52,44 @@ export default function HomePage() {
             <Link to="/police/login" className="hover:text-indigo-600">Police</Link>
           </nav>
 
-          {/* MOBILE MENU ICON */}
-          <Menu className="md:hidden w-6 h-6 text-gray-600" />
+          {/* MOBILE MENU BUTTON */}
+          <button
+  onClick={() => setMenuOpen(!menuOpen)}
+  className="md:hidden"
+  aria-label="Toggle navigation menu"
+  title="Menu"
+>
+  <Menu className="w-6 h-6 text-gray-600" />
+</button>
         </div>
+
+        {/* MOBILE MENU */}
+        {menuOpen && (
+          <div className="md:hidden bg-white border-t px-4 pb-4 space-y-3 text-gray-600">
+
+            <Link to="/" onClick={() => setMenuOpen(false)} className="block">
+              Home
+            </Link>
+
+            <a href="#about" onClick={() => setMenuOpen(false)} className="block">
+              About
+            </a>
+
+            <a href="#contact" onClick={() => setMenuOpen(false)} className="block">
+              Contact
+            </a>
+
+            <Link to="/driver/login" onClick={() => setMenuOpen(false)} className="block">
+              Driver
+            </Link>
+
+            <Link to="/police/login" onClick={() => setMenuOpen(false)} className="block">
+              Police
+            </Link>
+
+          </div>
+        )}
+
       </header>
 
       {/* ================= SLIDER ================= */}
@@ -88,6 +125,7 @@ export default function HomePage() {
           >
             ›
           </button>
+
         </div>
       </div>
 
@@ -104,7 +142,6 @@ export default function HomePage() {
       {/* ================= CARDS ================= */}
       <div className="max-w-6xl mx-auto mt-10 px-4 grid md:grid-cols-3 gap-6">
 
-        {/* POLICE */}
         <Link
           to="/police/login"
           className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl hover:scale-105 transition"
@@ -120,7 +157,6 @@ export default function HomePage() {
           </div>
         </Link>
 
-        {/* DRIVER */}
         <Link
           to="/driver/login"
           className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl hover:scale-105 transition"
@@ -136,7 +172,6 @@ export default function HomePage() {
           </div>
         </Link>
 
-        {/* ADMIN */}
         <Link
           to="/admin/login"
           className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl hover:scale-105 transition"
