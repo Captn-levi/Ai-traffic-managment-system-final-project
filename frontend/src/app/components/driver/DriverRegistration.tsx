@@ -1,187 +1,200 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { User, Mail, Phone, Lock, CreditCard } from 'lucide-react';
+import { User, Mail, Phone, Lock, CreditCard, Car } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 
 export default function DriverRegistration() {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     phone: '',
     licenseNumber: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+
+    // 🚗 NEW VEHICLE DATA
+    plateNumber: '',
+    vehicleType: '',
+    model: '',
+    color: ''
   });
 
- const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  // ✅ validation
-  if (
-    !formData.fullName ||
-    !formData.email ||
-    !formData.phone ||
-    !formData.licenseNumber ||
-    !formData.password ||
-    !formData.confirmPassword
-  ) {
-    alert("Please fill all fields");
-    return;
-  }
-
-  if (formData.password !== formData.confirmPassword) {
-    alert("Passwords do not match");
-    return;
-  }
-
-  try {
-    console.log("SENDING:", formData);
-
-    const res = await fetch("http://localhost/traffic/backend/driver_register.php", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        name: formData.fullName,
-        email: formData.email,
-        phone: formData.phone,
-        license: formData.licenseNumber,
-        password: formData.password
-      })
-    });
-
-    const data = await res.json();
-
-    console.log("SERVER:", data);
-
-    if (data.success) {
-      alert("✅ Registration successful");
-      navigate("/driver/login");
-    } else {
-      alert("❌ " + data.error);
+    // ✅ Validation
+    if (
+      !formData.fullName ||
+      !formData.email ||
+      !formData.phone ||
+      !formData.licenseNumber ||
+      !formData.password ||
+      !formData.confirmPassword ||
+      !formData.plateNumber
+    ) {
+      alert("Please fill all required fields");
+      return;
     }
 
-  } catch (error) {
-    console.error(error);
-    alert("Registration failed");
-  }
-};
+    if (formData.password !== formData.confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost/traffic/backend/driver_register.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: formData.fullName,
+          email: formData.email,
+          phone: formData.phone,
+          license: formData.licenseNumber,
+          password: formData.password,
+
+          // 🚗 VEHICLE DATA
+          plate_number: formData.plateNumber,
+          vehicle_type: formData.vehicleType,
+          model: formData.model,
+          color: formData.color
+        })
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        alert("✅ Registration successful");
+        navigate("/driver/login");
+      } else {
+        alert("❌ " + data.error);
+      }
+
+    } catch (error) {
+      console.error(error);
+      alert("Server error");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
+      <div className="w-full max-w-lg">
         <div className="bg-white rounded-2xl shadow-xl p-8">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
+
+          {/* HEADER */}
+          <div className="text-center mb-6">
+            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
               <User className="w-8 h-8 text-green-600" />
             </div>
-            <h1 className="text-2xl mb-2 text-gray-900">Driver Registration</h1>
-            <p className="text-gray-600 text-sm">Create your account to get started</p>
+            <h1 className="text-2xl font-semibold text-gray-900">
+              Driver Registration
+            </h1>
+            <p className="text-gray-500 text-sm">
+              Create your account and register your vehicle
+            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <Label htmlFor="fullName">Full Name</Label>
+
+            {/* DRIVER INFO */}
+            <h2 className="text-sm font-semibold text-gray-500">Driver Info</h2>
+
+            <Input
+              placeholder="Full Name"
+              value={formData.fullName}
+              onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+            />
+
+            <Input
+              type="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            />
+
+            <Input
+              placeholder="Phone Number"
+              value={formData.phone}
+              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            />
+
+            <Input
+              placeholder="License Number"
+              value={formData.licenseNumber}
+              onChange={(e) => setFormData({ ...formData, licenseNumber: e.target.value })}
+            />
+
+            {/* VEHICLE INFO */}
+            <h2 className="text-sm font-semibold text-gray-500 pt-2">Vehicle Info</h2>
+
+            <div className="grid grid-cols-2 gap-3">
+
               <Input
-                id="fullName"
-                type="text"
-                placeholder="Enter your full name"
-                value={formData.fullName}
-                onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                required
+                placeholder="Plate Number"
+                value={formData.plateNumber}
+                onChange={(e) => setFormData({ ...formData, plateNumber: e.target.value.toUpperCase() })}
               />
+
+              <Input
+                placeholder="Type (Car, Truck...)"
+                value={formData.vehicleType}
+                onChange={(e) => setFormData({ ...formData, vehicleType: e.target.value })}
+              />
+
+              <Input
+                placeholder="Model"
+                value={formData.model}
+                onChange={(e) => setFormData({ ...formData, model: e.target.value })}
+              />
+
+              <Input
+                placeholder="Color"
+                value={formData.color}
+                onChange={(e) => setFormData({ ...formData, color: e.target.value })}
+              />
+
             </div>
 
-            <div>
-              <Label htmlFor="email" className="flex items-center gap-2">
-                <Mail className="w-4 h-4" />
-                Email
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="Enter your email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                required
-              />
-            </div>
+            {/* PASSWORD */}
+            <h2 className="text-sm font-semibold text-gray-500 pt-2">Security</h2>
 
-            <div>
-              <Label htmlFor="phone" className="flex items-center gap-2">
-                <Phone className="w-4 h-4" />
-                Phone Number
-              </Label>
-              <Input
-                id="phone"
-                type="tel"
-                placeholder="Enter your phone number"
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                required
-              />
-            </div>
+            <Input
+              type="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            />
 
-            <div>
-              <Label htmlFor="licenseNumber" className="flex items-center gap-2">
-                <CreditCard className="w-4 h-4" />
-                License Number
-              </Label>
-              <Input
-                id="licenseNumber"
-                type="text"
-                placeholder="Enter your license number"
-                value={formData.licenseNumber}
-                onChange={(e) => setFormData({ ...formData, licenseNumber: e.target.value })}
-                required
-              />
-            </div>
+            <Input
+              type="password"
+              placeholder="Confirm Password"
+              value={formData.confirmPassword}
+              onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+            />
 
-            <div>
-              <Label htmlFor="password" className="flex items-center gap-2">
-                <Lock className="w-4 h-4" />
-                Password
-              </Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Create a password"
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                required
-              />
-            </div>
-
-            <div>
-              <Label htmlFor="confirmPassword">Confirm Password</Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                placeholder="Confirm your password"
-                value={formData.confirmPassword}
-                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                required
-              />
-            </div>
-
-            <Button type="submit" className="w-full bg-green-600 hover:bg-green-700">
+            {/* BUTTON */}
+            <Button type="submit" className="w-full bg-green-600 hover:bg-green-700 mt-3">
               Register
             </Button>
+
           </form>
 
-          <div className="mt-6 text-center">
-            <Link to="/driver/login" className="text-sm text-green-600 hover:underline">
+          {/* FOOTER */}
+          <div className="mt-6 text-center text-sm">
+            <Link to="/driver/login" className="text-green-600 hover:underline">
               Already have an account? Login
             </Link>
             <br />
-            <Link to="/" className="text-sm text-gray-600 hover:underline mt-2 inline-block">
+            <Link to="/" className="text-gray-500 hover:underline mt-2 inline-block">
               ← Back to Home
             </Link>
           </div>
+
         </div>
       </div>
     </div>
