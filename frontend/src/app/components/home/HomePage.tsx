@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { Shield, User, Settings, Bot, Menu } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import './HomePage.css';
+
 
 export default function HomePage() {
 
@@ -28,10 +30,10 @@ export default function HomePage() {
   }, [slides.length]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="homepage min-h-screen bg-gray-50">
 
       {/* ================= HEADER ================= */}
-      <header className="bg-white shadow-sm sticky top-0 z-50">
+      <header className="header bg-white shadow-sm sticky top-0 z-50">
 
         <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
 
@@ -44,12 +46,13 @@ export default function HomePage() {
           </div>
 
           {/* DESKTOP NAV */}
-          <nav className="hidden md:flex gap-6 text-sm text-gray-600">
-            <Link to="/" className="hover:text-indigo-600">Home</Link>
-            <a href="#about" className="hover:text-indigo-600">About</a>
-            <a href="#contact" className="hover:text-indigo-600">Contact</a>
-            <Link to="/driver/login" className="hover:text-indigo-600">Driver</Link>
-            <Link to="/police/login" className="hover:text-indigo-600">Police</Link>
+          <nav className="header-items hidden md:flex gap-6 text-sm text-gray-600">
+            <Link to="/" className=" home-header hover:text-indigo-600">Home</Link>
+            <Link to="/driver/login" className="home-header hover:text-indigo-600">Driver</Link>
+            <Link to="/police/login" className="home-header hover:text-indigo-600">Police</Link>
+            <a href="#about" className="home-header hover:text-indigo-600">About</a>
+            <a href="#contact" className="home-header hover:text-indigo-600">Contact</a>
+            
           </nav>
 
           {/* MOBILE MENU BUTTON */}
@@ -70,6 +73,13 @@ export default function HomePage() {
             <Link to="/" onClick={() => setMenuOpen(false)} className="block">
               Home
             </Link>
+            <Link to="/driver/login" onClick={() => setMenuOpen(false)} className="block">
+              Driver
+            </Link>
+
+            <Link to="/police/login" onClick={() => setMenuOpen(false)} className="block">
+              Police
+            </Link>
 
             <a href="#about" onClick={() => setMenuOpen(false)} className="block">
               About
@@ -79,13 +89,7 @@ export default function HomePage() {
               Contact
             </a>
 
-            <Link to="/driver/login" onClick={() => setMenuOpen(false)} className="block">
-              Driver
-            </Link>
-
-            <Link to="/police/login" onClick={() => setMenuOpen(false)} className="block">
-              Police
-            </Link>
+            
 
           </div>
         )}
@@ -93,8 +97,9 @@ export default function HomePage() {
       </header>
 
       {/* ================= SLIDER ================= */}
-      <div className="flex justify-center mt-4">
-        <div className="relative w-[90%] md:w-[70%] h-[80px] md:h-[240px] overflow-hidden rounded-xl shadow">
+      <div className="image-container relative w-[90%] md:w-[70%] h-[80px] md:h-[240px] overflow-hidden rounded-xl shadow">
+      <div className="images flex justify-center mt-1">
+        <div className="relative w-[90%] md:w-[70%] h-[200px] md:h-[240px] overflow-hidden rounded-xl shadow">
 
           {slides.map((img, index) => (
             <img
@@ -106,6 +111,7 @@ export default function HomePage() {
               }`}
             />
           ))}
+          </div>
 
           {/* ARROWS */}
           <button

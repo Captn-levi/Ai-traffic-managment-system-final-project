@@ -1,0 +1,48 @@
+.homepage {
+
+  background-color: #eaeaea; 
+}/* Light gray background */
+.header {
+  
+  text-align: center;
+  
+}
+
+.home-header{
+  padding: 5px 10px;
+  transition: 0.3s;
+  border-radius: 5px;
+
+}
+.home-header:hover{
+   border-inline: 3px solid #e18dfa;
+   
+   box-shadow: 0 15px 50px rgb(219, 78, 241);
+   /* background-color: rgb(224, 224, 224); */
+}
+ 
+.image-container{
+  width:auto;
+  height: 70%;
+  padding: 20px;
+  padding-bottom: 40px;
+  border-radius: 30px;
+  background-color: rgb(218, 215, 218);
+}
+.system-card {
+  transition: all 0.1s ease;
+}
+
+.system-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+  
+}
+
+.nav-link {
+  transition: 0.3s;
+}
+
+.nav-link:hover {
+  color: #4f46e5;
+}
