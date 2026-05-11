@@ -2,22 +2,26 @@ import { Link } from 'react-router-dom';
 import { Shield, User, Settings, Bot, Menu } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import './HomePage.css';
+import Header from '../shared/Header';
+import Footer from '../shared/Footer';
+
+// ✅ IMPORT YOUR PNG
 
 
 export default function HomePage() {
 
   const [currentSlide, setCurrentSlide] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  
+  const [showHeader, setShowHeader] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   // 🔥 SLIDES
   const slides = [
     "https://www.ebc.et/admin/news/2025/10/1/243e2f49-0f74-4a84-a130-478a3cc11078.webp",
     "https://tse4.mm.bing.net/th/id/OIP.TVvHyr7NdXLdaqPMn80OyQHaEK?pid=Api&h=220&P=0",
     "https://images.unsplash.com/photo-1511919884226-fd3cad34687c",
-    "https://www.eastafricanreview.com/wp-content/uploads/2024/06/Abye-After-Displacing-Piassa-residents-780x470.jpg",
-    "https://tse4.mm.bing.net/th/id/OIP.zj74WLRgMgko5tN5onJfYgHaFH?pid=Api&h=220&P=0",
-    "https://ethiopianstoday.com/wp-content/uploads/2024/04/6496_1713623262-1024x564.jpeg",
-    "https://tse3.mm.bing.net/th/id/OIP.4iLYSFrk_pmI5m6VgzCjCQHaE7?pid=Api&h=220&P=0"
+    "https://ethiopianstoday.com/wp-content/uploads/2024/04/6496_1713623262-1024x564.jpeg"
   ];
 
   // 🔁 AUTO SLIDE
@@ -29,176 +33,263 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, [slides.length]);
 
+  useEffect(() => {
+    const controlHeader = () => {
+      if (window.scrollY > lastScrollY && window.scrollY > 80) {
+        // scrolling down
+        setShowHeader(false);
+      } else {
+        // scrolling up
+        setShowHeader(true);
+      }
+      setLastScrollY(window.scrollY);
+    };
+
+    const handleScroll = () => {
+      controlHeader();
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+useEffect(() => {
+  const elements = document.querySelectorAll(
+    ".blur-reveal, .fade-up, .stagger-card"
+  );
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    },
+    {
+      threshold: 0.15,
+    }
+  );
+
+  elements.forEach((el) => observer.observe(el));
+
+  return () => {
+    elements.forEach((el) => observer.unobserve(el));
+  };
+}, []);
   return (
-    <div className="homepage min-h-screen bg-gray-50">
-
+    <div className="homepage min-h-screen bg-gray-50 overflow-x-hidden">
+  
+  
       {/* ================= HEADER ================= */}
-      <header className="header bg-white shadow-sm sticky top-0 z-50">
+   <Header />
 
-        <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+      {/* ================= HERO SECTION ================= */}
+<section className="hero-section fadeup relative min-h-screen bg-[#fdfaf5] overflow-hidden flex items-center justify-center">
 
-          {/* LOGO */}
-          <div className="flex items-center gap-2">
-            <Bot className="w-6 h-6 text-indigo-600" />
-            <span className="font-semibold text-gray-800 text-lg">
-              AI Traffic System
-            </span>
-          </div>
+  <div className="max-w-7xl mx-auto w-full px-5 md:px-12 relative">
 
-          {/* DESKTOP NAV */}
-          <nav className="header-items hidden md:flex gap-6 text-sm text-gray-600">
-            <Link to="/" className=" home-header hover:text-indigo-600">Home</Link>
-            <Link to="/driver/login" className="home-header hover:text-indigo-600">Driver</Link>
-            <Link to="/police/login" className="home-header hover:text-indigo-600">Police</Link>
-            <a href="#about" className="home-header hover:text-indigo-600">About</a>
-            <a href="#contact" className="home-header hover:text-indigo-600">Contact</a>
-            
-          </nav>
+    {/* CENTER IMAGE + FLOATING DESCRIPTION */}
+    <div className="relative flex justify-center items-start">
 
-          {/* MOBILE MENU BUTTON */}
-          <button
-  onClick={() => setMenuOpen(!menuOpen)}
-  className="md:hidden"
-  aria-label="Toggle navigation menu"
-  title="Menu"
->
-  <Menu className="w-6 h-6 text-gray-600" />
-</button>
-        </div>
+      {/* BACKGROUND TEXT */}
+      <h1
+        className="
+          absolute
+          top-10 md:top-24
+          text-[50px]
+          sm:text-[70px] md:text-[150px]
+          font-extrablack md:font-black
+          text-gray-200
+          leading-none
+          text-center
+          uppercase
+          tracking-wider
+          select-none
+          opacity-100
+        "
+      >
+        AI TRAFFIC
+      </h1>
 
-        {/* MOBILE MENU */}
-        {menuOpen && (
-          <div className="md:hidden bg-white border-t px-4 pb-4 space-y-3 text-gray-600">
-
-            <Link to="/" onClick={() => setMenuOpen(false)} className="block">
-              Home
-            </Link>
-            <Link to="/driver/login" onClick={() => setMenuOpen(false)} className="block">
-              Driver
-            </Link>
-
-            <Link to="/police/login" onClick={() => setMenuOpen(false)} className="block">
-              Police
-            </Link>
-
-            <a href="#about" onClick={() => setMenuOpen(false)} className="block">
-              About
-            </a>
-
-            <a href="#contact" onClick={() => setMenuOpen(false)} className="block">
-              Contact
-            </a>
-
-            
-
-          </div>
-        )}
-
-      </header>
-
-      {/* ================= SLIDER ================= */}
-      <div className="image-container relative w-[90%] md:w-[70%] h-[80px] md:h-[240px] overflow-hidden rounded-xl shadow">
-      <div className="images flex justify-center mt-1">
-        <div className="relative w-[90%] md:w-[70%] h-[200px] md:h-[240px] overflow-hidden rounded-xl shadow">
-
-          {slides.map((img, index) => (
-            <img
-              key={index}
-              src={img}
-              alt="slide"
-              className={`absolute w-full h-full object-cover transition-opacity duration-700 ${
-                index === currentSlide ? "opacity-100" : "opacity-0"
-              }`}
-            />
-          ))}
-          </div>
-
-          {/* ARROWS */}
-          <button
-            onClick={() =>
-              setCurrentSlide((currentSlide - 1 + slides.length) % slides.length)
-            }
-            className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 text-white px-2 rounded"
-          >
-            ‹
-          </button>
-
-          <button
-            onClick={() =>
-              setCurrentSlide((currentSlide + 1) % slides.length)
-            }
-            className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 text-white px-2 rounded"
-          >
-            ›
-          </button>
-
-        </div>
-      </div>
-
-      {/* ================= HERO ================= */}
-      <div className="text-center mt-10 px-4">
-        <h1 className="text-3xl md:text-4xl text-gray-900 mb-2">
-          AI-Based Digital Traffic Penalty System
-        </h1>
-        <p className="text-gray-600 text-sm md:text-base">
-          Smart, fast, and automated traffic violation management
+      {/* FLOATING DESCRIPTION CARD */}
+      <div className=" absolute left-0 md:left-16 top-[53%] md:top-[40%]
+          -translate-y-1/2 backdrop-blur-xl bg-white/40 border border-white/20
+          rounded-2xl shadow-2xl p-2 md:p-6 w-[210px] md:w-[380px]
+          z-20 hover:scale-105 transition-all duration-300
+        "
+      >
+        <p className="text-sm md:text-base text-gray-700 leading-6 tracking-wide">
+          AI-powered smart traffic monitoring and penalty management system
+          designed to modernize traffic law enforcement and automate traffic
+          violation processing across the city.
         </p>
       </div>
 
-      {/* ================= CARDS ================= */}
-      <div className="max-w-6xl mx-auto mt-10 px-4 grid md:grid-cols-3 gap-6">
+      {/* POLICE PNG */}
+      <img
+        src="/police.png"
+        alt="Traffic Police Officer"
+        className="
+          relative
+          -mt-10
+          md:mt-0
+          z-10
+          w-[300px]
+          sm:w-[380px]
+          md:w-[620px]
+          object-contain
+          drop-shadow-2xl
+          hover:scale-105
+          transition-all
+          duration-500
+        "
+      />
 
+    </div>
+
+    {/* MAIN TITLE */}
+    <div className="text-center -mt-4 md:-mt-16 relative z-20">
+
+      <h2
+        className="
+          text-3xl
+          sm:text-5xl
+          md:text-7xl
+          font-black
+          uppercase
+          tracking-wide
+          text-gray-900
+          leading-tight
+        "
+      >
+        Digital Traffic
+        <br />
+        Penalty System
+      </h2>
+
+      <p className="mt-5 text-gray-500 text-sm md:text-lg max-w-2xl mx-auto">
+        Smart, fast, secure, and AI-assisted traffic violation management platform.
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+      {/* ================= SLIDER ================= */}
+      <section className="py-10 bg-white fade-up">
+
+        <div className="flex justify-center">
+
+          <div className="image-container relative w-[92%] md:w-[70%] h-[170px] md:h-[320px] overflow-hidden rounded-2xl shadow-2xl">
+
+            {slides.map((img, index) => (
+              <img
+                key={index}
+                src={img}
+                alt="slide"
+                className={`absolute w-full h-full object-cover transition-opacity duration-700 ${
+                  index === currentSlide ? "opacity-100" : "opacity-0"
+                }`}
+              />
+            ))}
+
+            {/* ARROWS */}
+            <button
+              onClick={() =>
+                setCurrentSlide((currentSlide - 1 + slides.length) % slides.length)
+              }
+              className="slider-arrow left-3"
+            >
+              ‹
+            </button>
+
+            <button
+              onClick={() =>
+                setCurrentSlide((currentSlide + 1) % slides.length)
+              }
+              className="slider-arrow right-3"
+            >
+              ›
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      {/* ================= CARDS ================= */}
+      <section
+        id="services"
+        className="max-w-6xl mx-auto py-14 px-4 grid md:grid-cols-3 gap-8 stagger-card"
+      >
+
+        {/* POLICE */}
         <Link
           to="/police/login"
-          className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl hover:scale-105 transition"
+          className="card stagger-card"
         >
           <div className="text-center">
-            <div className="bg-blue-100 p-3 rounded-full inline-block mb-3">
-              <Shield className="w-8 h-8 text-blue-600" />
+            <div className="bg-blue-100 p-4 rounded-full inline-block mb-4">
+              <Shield className="w-9 h-9 text-blue-600" />
             </div>
-            <h2 className="text-lg text-gray-900">Traffic Police</h2>
-            <p className="text-sm text-gray-600 mt-2">
-              Capture violations and issue penalties using AI
+
+            <h2 className="text-xl font-semibold text-gray-900">
+              Traffic Police
+            </h2>
+
+            <p className="text-sm text-gray-600 mt-3 leading-relaxed">
+              Capture traffic violations and issue AI-supported penalties instantly.
             </p>
           </div>
         </Link>
 
+        {/* DRIVER */}
         <Link
           to="/driver/login"
-          className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl hover:scale-105 transition"
+          className="card stagger-card"
         >
           <div className="text-center">
-            <div className="bg-green-100 p-3 rounded-full inline-block mb-3">
-              <User className="w-8 h-8 text-green-600" />
+            <div className="bg-green-100 p-4 rounded-full inline-block mb-4">
+              <User className="w-9 h-9 text-green-600" />
             </div>
-            <h2 className="text-lg text-gray-900">Driver</h2>
-            <p className="text-sm text-gray-600 mt-2">
-              View penalties, pay fines, and get assistance
+
+            <h2 className="text-xl font-semibold text-gray-900">
+              Driver Portal
+            </h2>
+
+            <p className="text-sm text-gray-600 mt-3 leading-relaxed">
+              View violations, pay fines digitally, and receive AI assistance.
             </p>
           </div>
         </Link>
 
+        {/* ADMIN */}
         <Link
           to="/admin/login"
-          className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl hover:scale-105 transition"
+          className="card stagger-card"
         >
           <div className="text-center">
-            <div className="bg-purple-100 p-3 rounded-full inline-block mb-3">
-              <Settings className="w-8 h-8 text-purple-600" />
+            <div className="bg-purple-100 p-4 rounded-full inline-block mb-4">
+              <Settings className="w-9 h-9 text-purple-600" />
             </div>
-            <h2 className="text-lg text-gray-900">Administrator</h2>
-            <p className="text-sm text-gray-600 mt-2">
-              Manage users, vehicles, and system analytics
+
+            <h2 className="text-xl font-semibold text-gray-900">
+              Administrator
+            </h2>
+
+            <p className="text-sm text-gray-600 mt-3 leading-relaxed">
+              Manage vehicles, drivers, officers, analytics, and system operations.
             </p>
           </div>
         </Link>
 
-      </div>
+      </section>
 
       {/* ================= FOOTER ================= */}
-      <footer className="mt-16 text-center text-gray-500 text-sm pb-6">
-        © 2026 AI Traffic Penalty System — Unity University
-      </footer>
+     <Footer />
 
     </div>
   );

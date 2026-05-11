@@ -27,13 +27,15 @@ import ViolationManagement from './components/admin/ViolationManagement';
 import ReportsAnalytics from './components/admin/ReportsAnalytics';
 import SystemConfiguration from './components/admin/SystemConfiguration';
 import AuditLogs from './components/admin/AuditLogs';
-
+import AboutPage from './components/home/AboutPage';
+import ContactPage from './components/home/ContactPage';
 export default function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
         {/* Police Officer Routes */}
         <Route path="/police/login" element={<PoliceLogin />} />
         <Route path="/police/capture-plate" element={<CapturePlate />} />

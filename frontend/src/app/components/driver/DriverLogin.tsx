@@ -4,6 +4,8 @@ import { User, Lock, Mail } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
+import Header from '../shared/Header';
+import Footer from '../shared/Footer';
 
 export default function DriverLogin() {
   const navigate = useNavigate();
@@ -54,6 +56,9 @@ export default function DriverLogin() {
   };
 
   return (
+    <div className="min-h-screen bg-[#fdfaf5]">
+
+      <Header />
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
 
@@ -121,6 +126,8 @@ export default function DriverLogin() {
 
         </div>
       </div>
+    </div>
+     <Footer />
     </div>
   );
 }
