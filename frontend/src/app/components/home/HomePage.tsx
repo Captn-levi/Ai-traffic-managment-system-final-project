@@ -127,7 +127,7 @@ useEffect(() => {
 
       {/* POLICE PNG */}
       <img
-        src="/police.png"
+        src="/images/police.png"
         alt="Traffic Police Officer"
         className="
           relative
