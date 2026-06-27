@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from './components/home/HomePage';
+import Header from "./components/shared/Header";
 
 // Police Officer Screens
 import PoliceLogin from './components/police/PoliceLogin';
@@ -29,13 +30,19 @@ import SystemConfiguration from './components/admin/SystemConfiguration';
 import AuditLogs from './components/admin/AuditLogs';
 import AboutPage from './components/home/AboutPage';
 import ContactPage from './components/home/ContactPage';
+import ScrollToTop from './components/shared/ScrollToTop';
+
 export default function App() {
   return (
     <BrowserRouter>
+      {/* Listens for route changes globally and pushes scroll context back to top coordinates (0,0) */}
+      <ScrollToTop />
+
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        
         {/* Police Officer Routes */}
         <Route path="/police/login" element={<PoliceLogin />} />
         <Route path="/police/capture-plate" element={<CapturePlate />} />

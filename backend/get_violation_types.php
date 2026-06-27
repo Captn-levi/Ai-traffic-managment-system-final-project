@@ -1,7 +1,6 @@
 <?php
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json");
-header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 
@@ -11,15 +10,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit();
 }
 
-$conn = new mysqli("localhost", "root", "", "traffic_system");
 
-$result = $conn->query("SELECT * FROM violation_type");
+$conn = new mysqli("localhost","root","","traffic_system");
 
-$data = [];
+$result = $conn->query("
+SELECT
+    id,
+    name,
+    description,
+    amount
+FROM violation_types
+ORDER BY name
+");
 
-while ($row = $result->fetch_assoc()) {
-    $data[] = $row;
+if (!$result) {
+    echo json_encode([
+        "success" => false,
+        "error" => $conn->error
+    ]);
+    exit;
 }
 
-echo json_encode($data);
+$violations = [];
+
+while($row = $result->fetch_assoc()){
+    $violations[] = $row;
+}
+
+echo json_encode([
+    "success"=>true,
+    "violations"=>$violations
+]);
 ?>

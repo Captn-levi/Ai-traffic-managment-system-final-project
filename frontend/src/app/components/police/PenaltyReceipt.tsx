@@ -1,97 +1,212 @@
-import { useNavigate, useLocation } from 'react-router-dom';
-import { CheckCircle, Download, Share2, Printer } from 'lucide-react';
+import {
+  useNavigate,
+  useLocation
+} from 'react-router-dom';
+
+import {
+  CheckCircle,
+  Printer
+} from 'lucide-react';
+
 import MobileHeader from '../shared/MobileHeader';
+
 import { Button } from '../ui/button';
 
 export default function PenaltyReceipt() {
+
   const navigate = useNavigate();
+
   const location = useLocation();
-  const penalty = location.state?.penalty;
 
-  if (!penalty) {
-    return null;
-  }
+  const penalty =
+    location.state?.penalty;
 
-  const formattedDate = new Date(penalty.date).toLocaleString();
+  if (!penalty) return null;
+
+  const formattedDate =
+    new Date(penalty.date)
+      .toLocaleString();
 
   return (
+
     <div className="min-h-screen bg-gray-50">
-      <MobileHeader title="Penalty Receipt" backPath="/police/capture-plate" />
-      
+
+      <MobileHeader
+        title="Penalty Receipt"
+        backPath="/police/capture-plate"
+      />
+
       <div className="p-4 max-w-2xl mx-auto">
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-          <div className="text-center mb-6">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-3">
-              <CheckCircle className="w-10 h-10 text-green-600" />
+
+        <div className="bg-white rounded-3xl shadow-lg p-6">
+
+          {/* SUCCESS */}
+          <div className="text-center mb-8">
+
+            <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+
+              <CheckCircle className="w-12 h-12 text-green-600" />
+
             </div>
-            <h2 className="text-xl mb-1 text-gray-900">Penalty Issued Successfully</h2>
-            <p className="text-gray-600 text-sm">Receipt generated and sent to driver</p>
+
+            <h2 className="text-2xl font-bold text-gray-800">
+              Penalty Issued Successfully
+            </h2>
+
+            <p className="text-gray-500 mt-2">
+              The driver penalty has been recorded.
+            </p>
+
           </div>
 
-          <div className="border-t border-b border-gray-200 py-4 mb-4">
-            <div className="text-center mb-2">
-              <p className="text-sm text-gray-500">Penalty ID</p>
-              <p className="text-xl text-gray-900">{penalty.id}</p>
+          {/* RECEIPT */}
+          <div className="border rounded-2xl p-5 space-y-4">
+
+            <div className="text-center border-b pb-4">
+
+              <p className="text-sm text-gray-500">
+                Receipt ID
+              </p>
+
+              <h3 className="text-xl font-bold">
+                {penalty.id}
+              </h3>
+
             </div>
+
+            <div className="flex justify-between">
+              <span className="text-gray-500">
+                Date & Time
+              </span>
+
+              <span>
+                {formattedDate}
+              </span>
+            </div>
+
+            <div className="flex justify-between">
+              <span className="text-gray-500">
+                License Plate
+              </span>
+
+              <span>
+                {penalty.plate_number}
+              </span>
+            </div>
+
+            <div className="flex justify-between">
+              <span className="text-gray-500">
+                Owner
+              </span>
+
+              <span>
+                {penalty.owner}
+              </span>
+            </div>
+
+            <div className="flex justify-between">
+              <span className="text-gray-500">
+                Violation
+              </span>
+
+              <span>
+                {penalty.type}
+              </span>
+            </div>
+
+            <div className="flex justify-between">
+              <span className="text-gray-500">
+                Location
+              </span>
+
+              <span>
+                {penalty.location}
+              </span>
+            </div>
+
+            <div className="flex justify-between">
+              <span className="text-gray-500">
+                Officer
+              </span>
+
+              <span>
+                {penalty.officer}
+              </span>
+            </div>
+
+            <div className="flex justify-between">
+              <span className="text-gray-500">
+                Status
+              </span>
+
+              <span className="text-red-600 font-medium">
+                {penalty.status}
+              </span>
+            </div>
+
+            <div className="border-t pt-4 flex justify-between items-center">
+
+              <span className="text-lg text-gray-600">
+                Total Amount
+              </span>
+
+              <span className="text-3xl font-bold text-blue-700">
+                ETB {penalty.amount}
+              </span>
+
+            </div>
+
           </div>
 
-          <div className="space-y-3">
-            <div className="flex justify-between">
-              <span className="text-gray-600">Date & Time:</span>
-              <span className="text-gray-900">{formattedDate}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">License Plate:</span>
-              <span className="text-gray-900">{penalty.plateNumber}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Owner Name:</span>
-              <span className="text-gray-900">{penalty.owner}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Violation Type:</span>
-              <span className="text-gray-900">{penalty.name}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-gray-600">Issuing Officer:</span>
-              <span className="text-gray-900">{penalty.officer}</span>
-            </div>
-            <div className="flex justify-between border-t pt-3">
-              <span className="text-gray-600">Penalty Amount:</span>
-              <span className="text-2xl text-blue-600">${penalty.amount}</span>
-            </div>
-          </div>
-
+          {/* NOTES */}
           {penalty.notes && (
-            <div className="mt-4 p-3 bg-gray-50 rounded-lg">
-              <p className="text-sm text-gray-600 mb-1">Additional Notes:</p>
-              <p className="text-gray-900">{penalty.notes}</p>
+
+            <div className="mt-5 bg-gray-100 rounded-2xl p-4">
+
+              <p className="text-sm text-gray-500 mb-1">
+                Officer Notes
+              </p>
+
+              <p className="text-gray-800">
+                {penalty.notes}
+              </p>
+
             </div>
           )}
+
+          {/* ACTIONS */}
+          <div className="mt-6">
+
+            <Button
+              onClick={() => window.print()}
+              variant="outline"
+              className="w-full py-6"
+            >
+
+              <Printer className="w-5 h-5 mr-2" />
+
+              Print Receipt
+
+            </Button>
+
+          </div>
+
         </div>
 
-        <div className="grid grid-cols-3 gap-3 mb-6">
-          <Button variant="outline" className="flex-col h-auto py-3">
-            <Download className="w-5 h-5 mb-1" />
-            <span className="text-xs">Download</span>
-          </Button>
-          <Button variant="outline" className="flex-col h-auto py-3">
-            <Share2 className="w-5 h-5 mb-1" />
-            <span className="text-xs">Share</span>
-          </Button>
-          <Button variant="outline" className="flex-col h-auto py-3">
-            <Printer className="w-5 h-5 mb-1" />
-            <span className="text-xs">Print</span>
-          </Button>
-        </div>
-
+        {/* NEW PENALTY */}
         <Button
-          onClick={() => navigate('/police/capture-plate')}
-          className="w-full bg-blue-600 hover:bg-blue-700"
+          onClick={() =>
+            navigate('/police/capture-plate')
+          }
+          className="w-full mt-5 bg-blue-600 hover:bg-blue-700 py-6"
         >
+
           Issue Another Penalty
+
         </Button>
+
       </div>
+
     </div>
   );
 }

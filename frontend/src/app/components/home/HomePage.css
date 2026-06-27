@@ -1,223 +1,133 @@
-.home-header{
-  position: relative;
-  transition: 0.3s;
-  font-weight: 500;
-}
+/* ============================================================
+   HomePage.css
+   Civic/authority palette: deep navy (#0b2545), warm gold accent
+   (#c99a3b), warm off-white base (#fdfaf5), charcoal text (#1f2430).
+   ============================================================ */
 
-.home-header:hover{
-  color: #4f46e5;
-  transform: translateY(-2px);
-}
-
-.home-header::after{
-  content: '';
-  position: absolute;
-  width: 0%;
-  height: 2px;
-  left: 0;
-  bottom: -5px;
-  background: #4f46e5;
-  transition: 0.3s;
-}
-
-.home-header:hover::after{
-  width: 100%;
-}
-
-.mobile-link{
-  transition: 0.3s;
-}
-
-.mobile-link:hover{
-  color: #4f46e5;
-  padding-left: 8px;
-}
-
-.hero-title{
-  text-shadow: 0 0 20px rgba(255,255,255,0.1);
-}
-
-.hero-police-image{
-  max-height: 90vh;
-  object-fit: contain;
-  filter:
-    drop-shadow(0 25px 40px rgba(0,0,0,0.5))
-    drop-shadow(0 0 30px rgba(59,130,246,0.3));
-  animation: floatImage 4s ease-in-out infinite;
-}
-
-@keyframes floatImage{
-  0%{
-    transform: translateY(0px);
-  }
-
-  50%{
-    transform: translateY(-10px);
-  }
-
-  100%{
-    transform: translateY(0px);
-  }
-}
-
-.hero-btn-driver{
-  background: #16a34a;
-  color: white;
-  padding: 14px 28px;
-  border-radius: 12px;
-  transition: 0.3s;
-  font-weight: 600;
-}
-
-.hero-btn-driver:hover{
-  transform: translateY(-4px);
-  box-shadow: 0 15px 30px rgba(22,163,74,0.4);
-}
-
-.hero-btn-police{
-  background: #2563eb;
-  color: white;
-  padding: 14px 28px;
-  border-radius: 12px;
-  transition: 0.3s;
-  font-weight: 600;
-}
-
-.hero-btn-police:hover{
-  transform: translateY(-4px);
-  box-shadow: 0 15px 30px rgba(37,99,235,0.4);
-}
-
-.card{
-  background: white;
-  border-radius: 20px;
-  padding: 32px 24px;
-  transition: 0.4s;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-}
-
-.card:hover{
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 25px 40px rgba(0,0,0,0.15);
-}
-
-.slider-arrow{
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0,0,0,0.45);
-  color: white;
-  border: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: 0.3s;
-  z-index: 20;
-}
-
-.slider-arrow:hover{
-  background: rgba(0,0,0,0.7);
-  transform: translateY(-50%) scale(1.1);
-}
-
-@media (max-width: 768px){
-
-  .hero-title{
-    font-size: 3rem;
-  }
-
-  .hero-police-image{
-    max-height: 60vh;
-  }
-
-}
-.fade-in-section {
+/* ---------- Scroll reveals ---------- */
+.fade-up,
+.blur-reveal,
+.stagger-card {
   opacity: 0;
-  transform: translateY(60px);
-  transition: all 1s ease;
+  transition: opacity 0.7s ease, transform 0.7s ease, filter 0.7s ease;
 }
-
-.fade-in-section.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-@keyframes fadeUp{
-
-  from{
-    opacity: 0;
-    transform: translateY(60px);
-  }
-
-  to{
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-}
-.hero-section{
-  background: #fdfaf5;
-}
-
-.hero-section img{
-  filter: drop-shadow(0px 20px 40px rgba(0,0,0,0.7));
-}
-.description {
-  border-radius: 15px;
-
-}
-/* ================= HERO BLUR REVEAL ================= */
-
-.blur-reveal {
-  opacity: 0;
-  filter: blur(18px);
-  transform: translateY(50px) scale(0.96);
-  transition: all 1.2s ease;
-}
-
-.blur-reveal.visible {
-  opacity: 1;
-  filter: blur(0);
-  transform: translateY(0) scale(1);
-}
-
-
-/* ================= FADE UP ================= */
 
 .fade-up {
-  opacity: 0;
-  transform: translateY(70px);
-  transition: all 1s ease;
+  transform: translateY(24px);
 }
-
 .fade-up.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-
-/* ================= STAGGER CARDS ================= */
-
-.stagger-card {
-  opacity: 0;
-  transform: translateY(60px);
-  transition: all 0.8s ease;
+.blur-reveal {
+  filter: blur(8px);
+  transform: translateY(10px);
+}
+.blur-reveal.visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
 }
 
+.stagger-card {
+  transform: translateY(20px);
+}
 .stagger-card.visible {
   opacity: 1;
   transform: translateY(0);
 }
+.stagger-card:nth-of-type(1) { transition-delay: 0ms; }
+.stagger-card:nth-of-type(2) { transition-delay: 90ms; }
+.stagger-card:nth-of-type(3) { transition-delay: 180ms; }
 
-.stagger-card:nth-child(1) {
-  transition-delay: 0.1s;
+@media (prefers-reduced-motion: reduce) {
+  .fade-up,
+  .blur-reveal,
+  .stagger-card {
+    transition: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
 }
 
-.stagger-card:nth-child(2) {
-  transition-delay: 0.3s;
+/* ---------- Hero wordmark ---------- */
+.hero-wordmark {
+  font-family: 'Archivo Black', 'Arial Black', sans-serif;
+  letter-spacing: 0.02em;
 }
 
-.stagger-card:nth-child(3) {
-  transition-delay: 0.5s;
+/* ---------- Hero fallback badge (shown if /images/police.png fails) ---------- */
+.hero-fallback-badge {
+  animation: badge-pulse 3.5s ease-in-out infinite;
 }
+
+@keyframes badge-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(201, 154, 59, 0.25); }
+  50% { box-shadow: 0 0 0 16px rgba(201, 154, 59, 0); }
+}
+
+/* ---------- Stat tiles ---------- */
+.stat-tile {
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.stat-tile:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 24px -12px rgba(11, 37, 69, 0.18);
+}
+
+/* ---------- Slider ---------- */
+.image-container {
+  background-color: #1f2430;
+}
+
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.85);
+  color: #1f2430;
+  font-size: 22px;
+  line-height: 1;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+  z-index: 10;
+}
+.slider-arrow:hover {
+  background: #fff;
+  transform: translateY(-50%) scale(1.08);
+}
+.slider-arrow:focus-visible {
+  outline: 2px solid #c99a3b;
+  outline-offset: 2px;
+}
+
+/* ---------- Service cards ---------- */
+.card {
+  display: block;
+  background: #ffffff;
+  border: 1px solid rgba(11, 37, 69, 0.08);
+  border-radius: 20px;
+  padding: 2.25rem 1.5rem;
+  box-shadow: 0 1px 2px rgba(11, 37, 69, 0.04);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 32px -16px rgba(11, 37, 69, 0.2);
+  border-color: rgba(11, 37, 69, 0.14);
+}
+.card:focus-visible {
+  outline: 2px solid #c99a3b;
+  outline-offset: 3px;
+}
+
+

@@ -1,0 +1,223 @@
+.home-header{
+  position: relative;
+  transition: 0.3s;
+  font-weight: 500;
+}
+
+.home-header:hover{
+  color: #4f46e5;
+  transform: translateY(-2px);
+}
+
+.home-header::after{
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  left: 0;
+  bottom: -5px;
+  background: #4f46e5;
+  transition: 0.3s;
+}
+
+.home-header:hover::after{
+  width: 100%;
+}
+
+.mobile-link{
+  transition: 0.3s;
+}
+
+.mobile-link:hover{
+  color: #4f46e5;
+  padding-left: 8px;
+}
+
+.hero-title{
+  text-shadow: 0 0 20px rgba(255,255,255,0.1);
+}
+
+.hero-police-image{
+  max-height: 90vh;
+  object-fit: contain;
+  filter:
+    drop-shadow(0 25px 40px rgba(0,0,0,0.5))
+    drop-shadow(0 0 30px rgba(59,130,246,0.3));
+  animation: floatImage 4s ease-in-out infinite;
+}
+
+@keyframes floatImage{
+  0%{
+    transform: translateY(0px);
+  }
+
+  50%{
+    transform: translateY(-10px);
+  }
+
+  100%{
+    transform: translateY(0px);
+  }
+}
+
+.hero-btn-driver{
+  background: #16a34a;
+  color: white;
+  padding: 14px 28px;
+  border-radius: 12px;
+  transition: 0.3s;
+  font-weight: 600;
+}
+
+.hero-btn-driver:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(22,163,74,0.4);
+}
+
+.hero-btn-police{
+  background: #2563eb;
+  color: white;
+  padding: 14px 28px;
+  border-radius: 12px;
+  transition: 0.3s;
+  font-weight: 600;
+}
+
+.hero-btn-police:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(37,99,235,0.4);
+}
+
+.card{
+  background: white;
+  border-radius: 20px;
+  padding: 32px 24px;
+  transition: 0.4s;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.card:hover{
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 25px 40px rgba(0,0,0,0.15);
+}
+
+.slider-arrow{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.45);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: 0.3s;
+  z-index: 20;
+}
+
+.slider-arrow:hover{
+  background: rgba(0,0,0,0.7);
+  transform: translateY(-50%) scale(1.1);
+}
+
+@media (max-width: 768px){
+
+  .hero-title{
+    font-size: 3rem;
+  }
+
+  .hero-police-image{
+    max-height: 60vh;
+  }
+
+}
+.fade-in-section {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: all 1s ease;
+}
+
+.fade-in-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@keyframes fadeUp{
+
+  from{
+    opacity: 0;
+    transform: translateY(60px);
+  }
+
+  to{
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+}
+.hero-section{
+  background: #fdfaf5;
+}
+
+.hero-section img{
+  filter: drop-shadow(0px 20px 40px rgba(0,0,0,0.7));
+}
+.description {
+  border-radius: 15px;
+
+}
+/* ================= HERO BLUR REVEAL ================= */
+
+.blur-reveal {
+  opacity: 0;
+  filter: blur(18px);
+  transform: translateY(50px) scale(0.96);
+  transition: all 1.2s ease;
+}
+
+.blur-reveal.visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0) scale(1);
+}
+
+
+/* ================= FADE UP ================= */
+
+.fade-up {
+  opacity: 0;
+  transform: translateY(70px);
+  transition: all 1s ease;
+}
+
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ================= STAGGER CARDS ================= */
+
+.stagger-card {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: all 0.8s ease;
+}
+
+.stagger-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stagger-card:nth-child(1) {
+  transition-delay: 0.1s;
+}
+
+.stagger-card:nth-child(2) {
+  transition-delay: 0.3s;
+}
+
+.stagger-card:nth-child(3) {
+  transition-delay: 0.5s;
+}

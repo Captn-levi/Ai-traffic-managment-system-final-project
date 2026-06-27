@@ -7,7 +7,18 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200">
+
+    <header
+      className="
+        sticky
+        top-0
+        z-50
+        bg-white/5
+        backdrop-blur-lg
+        border-b
+        border-gray-200
+      "
+    >
 
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
 
@@ -24,25 +35,125 @@ export default function Header() {
         </Link>
 
         {/* DESKTOP NAV */}
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-700">
+        <nav className="hidden md:flex items-center gap-8 text-sm text-gray-700">
 
-          <Link to="/" className="hover:text-indigo-600 transition">
+          <Link
+            to="/"
+            className="
+              relative
+              font-medium
+              transition-all
+              duration-300
+              hover:text-indigo-600
+              hover:-translate-y-[2px]
+              after:content-['']
+              after:absolute
+              after:w-0
+              after:h-[2px]
+              after:left-0
+              after:-bottom-1
+              after:bg-indigo-600
+              after:transition-all
+              after:duration-300
+              hover:after:w-full
+            "
+          >
             Home
           </Link>
 
-          <Link to="/about" className="hover:text-indigo-600 transition">
+          <Link
+            to="/about"
+            className="
+              relative
+              font-medium
+              transition-all
+              duration-300
+              hover:text-indigo-600
+              hover:-translate-y-[2px]
+              after:content-['']
+              after:absolute
+              after:w-0
+              after:h-[2px]
+              after:left-0
+              after:-bottom-1
+              after:bg-indigo-600
+              after:transition-all
+              after:duration-300
+              hover:after:w-full
+            "
+          >
             About
           </Link>
 
-          <Link to="/contact" className="hover:text-indigo-600 transition">
+          <Link
+            to="/contact"
+            className="
+              relative
+              font-medium
+              transition-all
+              duration-300
+              hover:text-indigo-600
+              hover:-translate-y-[2px]
+              after:content-['']
+              after:absolute
+              after:w-0
+              after:h-[2px]
+              after:left-0
+              after:-bottom-1
+              after:bg-indigo-600
+              after:transition-all
+              after:duration-300
+              hover:after:w-full
+            "
+          >
             Contact
           </Link>
 
-          <Link to="/driver/login" className="hover:text-green-600 transition">
+          <Link
+            to="/driver/login"
+            className="
+              relative
+              font-medium
+              transition-all
+              duration-300
+              hover:text-green-600
+              hover:-translate-y-[2px]
+              after:content-['']
+              after:absolute
+              after:w-0
+              after:h-[2px]
+              after:left-0
+              after:-bottom-1
+              after:bg-green-600
+              after:transition-all
+              after:duration-300
+              hover:after:w-full
+            "
+          >
             Driver
           </Link>
 
-          <Link to="/police/login" className="hover:text-blue-600 transition">
+          <Link
+            to="/police/login"
+            className="
+              relative
+              font-medium
+              transition-all
+              duration-300
+              hover:text-blue-600
+              hover:-translate-y-[2px]
+              after:content-['']
+              after:absolute
+              after:w-0
+              after:h-[2px]
+              after:left-0
+              after:-bottom-1
+              after:bg-blue-600
+              after:transition-all
+              after:duration-300
+              hover:after:w-full
+            "
+          >
             Police
           </Link>
 
@@ -70,7 +181,13 @@ export default function Header() {
           <Link
             to="/"
             onClick={() => setMenuOpen(false)}
-            className="block"
+            className="
+              block
+              transition-all
+              duration-300
+              hover:text-indigo-600
+              hover:pl-2
+            "
           >
             Home
           </Link>
@@ -78,7 +195,13 @@ export default function Header() {
           <Link
             to="/about"
             onClick={() => setMenuOpen(false)}
-            className="block"
+            className="
+              block
+              transition-all
+              duration-300
+              hover:text-indigo-600
+              hover:pl-2
+            "
           >
             About
           </Link>
@@ -86,7 +209,13 @@ export default function Header() {
           <Link
             to="/contact"
             onClick={() => setMenuOpen(false)}
-            className="block"
+            className="
+              block
+              transition-all
+              duration-300
+              hover:text-indigo-600
+              hover:pl-2
+            "
           >
             Contact
           </Link>
@@ -94,7 +223,13 @@ export default function Header() {
           <Link
             to="/driver/login"
             onClick={() => setMenuOpen(false)}
-            className="block"
+            className="
+              block
+              transition-all
+              duration-300
+              hover:text-green-600
+              hover:pl-2
+            "
           >
             Driver
           </Link>
@@ -102,7 +237,13 @@ export default function Header() {
           <Link
             to="/police/login"
             onClick={() => setMenuOpen(false)}
-            className="block"
+            className="
+              block
+              transition-all
+              duration-300
+              hover:text-blue-600
+              hover:pl-2
+            "
           >
             Police
           </Link>
